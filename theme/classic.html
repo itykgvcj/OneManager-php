@@ -249,7 +249,7 @@
                             </li>
 <!--AdminEnd-->
                             <ion-icon name="folder"></ion-icon>
-                            <a id="file_a<!--filenum-->" name="folderlist" href="<!--FileEncodeReplaceUrl-->/"><!--FileEncodeReplaceName--></a>
+                            <a id="file_a<!--filenum-->" name="folderlist" href="<!--FileEncodeReplaceUrl-->/" fileid="<!--FileId-->"><!--FileEncodeReplaceName--></a>
                         </td>
                         <td class="updated_at" id="folder_time<!--filenum-->"><!--lastModifiedDateTime--></td>
                         <td class="size" id="folder_size<!--filenum-->"><!--size--></td>
@@ -269,7 +269,7 @@
                             </li>
 <!--AdminEnd-->
                             <ion-icon name="<!--IconValue-->"></ion-icon>
-                            <a id="file_a<!--filenum-->" name="filelist" href="<!--FileEncodeReplaceUrl-->?preview" target=_blank><!--FileEncodeReplaceName--></a>
+                            <a id="file_a<!--filenum-->" name="filelist" href="<!--FileEncodeReplaceUrl-->?preview" fileid="<!--FileId-->" target=_blank><!--FileEncodeReplaceName--></a>
                             <a class="download" href="<!--FileEncodeReplaceUrl-->"><ion-icon name="download"></ion-icon></a>
                         </td>
                         <td class="updated_at" id="file_time<!--filenum-->"><!--lastModifiedDateTime--></td>
@@ -357,6 +357,7 @@
                 <label id="rename_label"></label><br><br><a onclick="operatediv_close('rename')" class="operatediv_close"><!--constStr@Close--></a>
                 <form id="rename_form" onsubmit="return submit_operate('rename');">
                 <input id="rename_sid" name="rename_sid" type="hidden" value="">
+                <input id="rename_fileid" name="rename_fileid" type="hidden" value="">
                 <input id="rename_hidden" name="rename_oldname" type="hidden" value="">
                 <input id="rename_input" name="rename_newname" type="text" value="">
                 <input name="operate_action" type="submit" value="<!--constStr@Rename-->">
@@ -370,6 +371,7 @@
                 <form id="delete_form" onsubmit="return submit_operate('delete');">
                 <label id="delete_input"><!--constStr@Delete-->?</label>
                 <input id="delete_sid" name="delete_sid" type="hidden" value="">
+                <input id="delete_fileid" name="delete_fileid" type="hidden" value="">
                 <input id="delete_hidden" name="delete_name" type="hidden" value="">
                 <input name="operate_action" type="submit" value="<!--constStr@Submit-->">
                 </form>
@@ -380,6 +382,7 @@
                 <label id="encrypt_label"></label><br><br><a onclick="operatediv_close('encrypt')" class="operatediv_close"><!--constStr@Close--></a>
                 <form id="encrypt_form" onsubmit="return submit_operate('encrypt');">
                 <input id="encrypt_sid" name="encrypt_sid" type="hidden" value="">
+                <input id="encrypt_fileid" name="encrypt_fileid" type="hidden" value="">
                 <input id="encrypt_hidden" name="encrypt_folder" type="hidden" value="">
                 <input id="encrypt_input" name="encrypt_newpass" type="text" value="" placeholder="<!--constStr@InputPasswordUWant-->">
                 <!--EncryptBtnStart--><input name="operate_action" type="submit" value="<!--constStr@Encrypt-->"><!--EncryptBtnEnd--><!--EncryptAlertStart--><br><label><!--constStr@SetpassfileBfEncrypt--></label><!--EncryptAlertEnd-->
@@ -391,6 +394,7 @@
                 <label id="copy_label"></label><br><br><a onclick="operatediv_close('copy')" class="operatediv_close"><!--constStr@Close--></a>
                 <form id="copy_form" onsubmit="return submit_operate('copy');">
                 <input id="copy_sid" name="copy_sid" type="hidden" value="">
+                <input id="copy_fileid" name="copy_fileid" type="hidden" value="">
                 <input id="copy_hidden" name="copy_name" type="hidden" value="">
                 <input id="copy_input" name="copy_input" type="hidden" value="">
                 <input name="operate_action" type="submit" value="<!--constStr@Copy-->">
@@ -402,6 +406,7 @@
                 <label id="move_label"></label><br><br><a onclick="operatediv_close('move')" class="operatediv_close"><!--constStr@Close--></a>
                 <form id="move_form" onsubmit="return submit_operate('move');">
                 <input id="move_sid" name="move_sid" type="hidden" value="">
+                <input id="move_fileid" name="move_fileid" type="hidden" value="">
                 <input id="move_hidden" name="move_name" type="hidden" value="">
                 <select id="move_input" name="move_folder">
 <!--MoveRootStart-->
@@ -420,6 +425,7 @@
                 <a onclick="operatediv_close('create')" class="operatediv_close"><!--constStr@Close--></a>
                 <form id="create_form" onsubmit="return submit_operate('create');">
                     <input id="create_sid" name="create_sid" type="hidden" value="">
+                    <input id="create_fileid" name="create_fileid" type="hidden" value="">
                     <input id="create_hidden" type="hidden" value="">
                     <table>
                         <tr>
@@ -472,6 +478,7 @@
 <!--MdRequireStart--><link rel="stylesheet" href="//unpkg.zhimg.com/github-markdown-css@3.0.1/github-markdown.css">
 <script type="text/javascript" src="//unpkg.zhimg.com/marked@0.6.2/marked.min.js"></script><!--MdRequireEnd-->
 <!--GuestUploadStart--><script type="text/javascript" src="//cdn.bootcss.com/spark-md5/3.0.0/spark-md5.min.js"></script><!--GuestUploadEnd-->
+<!--AliyundriveUploadJsStart--><script src="//cdn.bootcdn.net/ajax/libs/js-sha1/0.6.0/sha1.min.js"></script><!--AliyundriveUploadJsEnd-->
 <!--IsFileStart--><!--IspdfFileStart--><script src="//cdn.bootcss.com/pdf.js/2.3.200/pdf.min.js"></script><!--IspdfFileEnd--><!--IsFileEnd-->
 <!--ListEnd-->
 <script type="text/javascript">
@@ -485,27 +492,7 @@
         location.href = location.href;
     }
 <!--ListStart-->
-    /*var root = '<!--base_disk_path-->';
-    function path_format(path) {
-        path = '/' + path + '/';
-        while (path.indexOf('//') !== -1) {
-            path = path.replace('//', '/')
-        }
-        return path
-    }
-    document.querySelectorAll('.table-header').forEach(function (e) {
-        var path = e.innerText;
-        if (path.substr(path.length-1)=='/') path = path.substr(0, path.length-1);
-        var paths = path.split('/');
-        e.innerHTML = '/ ';
-        if (paths <= 2) return;
-        for (var i = 1; i < paths.length - 1; i++) {
-            var to = path_format(root + paths.slice(0, i + 1).join('/'));
-            e.innerHTML += '<a href="' + to + '">' + paths[i] + '</a> / '
-        }
-        e.innerHTML += paths[paths.length - 1];
-        e.innerHTML = e.innerHTML.replace(/\s\/\s$/, '')
-    });*/
+
 <!--IsFileStart-->
     var $url = document.getElementById('url');
     if ($url) {
@@ -796,6 +783,24 @@
         alert(tmptextarea.innerHTML+"<!--constStr@Success-->");
     }
 <!--UploadJsStart-->
+    function size_format(num) {
+        if (num>1024) {
+            num=num/1024;
+        } else {
+            return num.toFixed(2) + ' B';
+        }
+        if (num>1024) {
+            num=num/1024;
+        } else {
+            return num.toFixed(2) + ' KB';
+        }
+        if (num>1024) {
+            num=num/1024;
+        } else {
+            return num.toFixed(2) + ' MB';
+        }
+        return num.toFixed(2) + ' GB';
+    }
     function uploadbuttonhide() {
         document.getElementById('upload_btns').style.display='none';
         /*document.getElementById('upload_submit').disabled='disabled';
@@ -810,6 +815,8 @@
         document.getElementById('upload_submit').style.display='';
         document.getElementById('upload_file').style.display='';*/
     }
+<!--UploadJsEnd-->
+<!--OnedriveUploadJsStart-->
     function preup() {
         uploadbuttonhide();
         var files=document.getElementById('upload_file').files;
@@ -929,24 +936,7 @@
         }
         uploadbuttonshow();
     }
-    function size_format(num) {
-        if (num>1024) {
-            num=num/1024;
-        } else {
-            return num.toFixed(2) + ' B';
-        }
-        if (num>1024) {
-            num=num/1024;
-        } else {
-            return num.toFixed(2) + ' KB';
-        }
-        if (num>1024) {
-            num=num/1024;
-        } else {
-            return num.toFixed(2) + ' MB';
-        }
-        return num.toFixed(2) + ' GB';
-    }
+
     function binupfile(file,url,tdnum,filename){
         var label=document.getElementById('upfile_td2_'+tdnum);
         var reader = new FileReader();
@@ -1026,8 +1016,8 @@
                                 label.style.color='green';
                                 // uploadbuttonshow();
 <!--AdminStart-->
-                                response.name=file.webkitRelativePath||response.name;
-                                addelement(response);
+                                //response.name=file.webkitRelativePath||response.name;
+                                //addelement(response);
 <!--AdminEnd-->
                             } else {
                                 if (!response['nextExpectedRanges']) {
@@ -1052,7 +1042,89 @@
             }
         }
     }
-<!--UploadJsEnd-->
+<!--OnedriveUploadJsEnd-->
+<!--AliyundriveUploadJsStart-->
+    function preup() {
+        uploadbuttonhide();
+        var files=document.getElementById('upload_file').files;
+	    if (files.length<1) {
+            uploadbuttonshow();
+            return;
+        };
+        var table1=document.createElement('table');
+        document.getElementById('upload_div').appendChild(table1);
+        table1.setAttribute('class','list-table');
+        var timea=new Date().getTime();
+        var i=0;
+        getuplink(i);
+        function getuplink(i, r=0) {
+            var file=files[i];
+            var td1;
+            var td2;
+            if (r==0) {
+                var tr1=document.createElement('tr');
+                table1.appendChild(tr1);
+                tr1.setAttribute('data-to',1);
+                td1=document.createElement('td');
+                tr1.appendChild(td1);
+                td1.setAttribute('style','width:30%;word-break:break-word;');
+                td1.setAttribute('id','upfile_td1_'+timea+'_'+i);
+                td1.innerHTML=(file.webkitRelativePath||file.name)+'<br>'+size_format(file.size);
+                td2=document.createElement('td');
+                tr1.appendChild(td2);
+                td2.setAttribute('id','upfile_td2_'+timea+'_'+i);
+            }
+            var tdnum = timea+'_'+i;
+            td1=document.getElementById('upfile_td1_'+tdnum);
+            td2=document.getElementById('upfile_td2_'+tdnum);
+            if (file.size>100*1024*1024*1024) {
+                td2.innerHTML='<font color="red"><!--constStr@UpFileTooLarge--></font>';
+                uploadbuttonshow();
+                return;
+            }
+            upbigfilename = encodeURIComponent((file.webkitRelativePath||file.name));
+            td2.innerHTML='计算SHA1 ...';
+            var reader = new FileReader();
+            reader.readAsArrayBuffer(file);
+            reader.onload = function(e){
+                var filesha1 = sha1(this.result);
+                td2.innerHTML='<!--constStr@GetUploadLink--> ...';
+                var xhr1 = new XMLHttpRequest();
+                xhr1.open("GET", '?action=upbigfile&upbigfilename='+ upbigfilename +'&filesize='+ file.size +'&lastModified='+ file.lastModified + '&sha1=' + filesha1);
+                xhr1.setRequestHeader('x-requested-with','XMLHttpRequest');
+                xhr1.onload = function(e){
+                    //console.log(xhr1.status+xhr1.responseText);
+                    td2.innerHTML='<font color="red">'+xhr1.responseText+'</font>';
+                    if (xhr1.status==409) {
+                        // td2.innerHTML='nameAlreadyExists';
+                        var html=JSON.parse(xhr1.responseText);
+                        td2.innerHTML=html['error']['code']+': '+html['error']['message'];
+                        td1.innerHTML='<div style="color:green"><a href="<!--base_disk_path--><!--Path-->'+(file.webkitRelativePath||file.name)+'?preview" id="upfile_a_'+tdnum+'" target="_blank">'+td1.innerHTML+'</a><br><a href="<!--base_disk_path--><!--Path-->'+(file.webkitRelativePath||file.name)+'" id="upfile_a1_'+tdnum+'"></a><!--constStr@UploadComplete--><button onclick="CopyAllDownloadUrl(\'#upfile_a1_'+tdnum+'\');" id="upfile_cpbt_'+tdnum+'" <!--AdminStart--> style="display:none"<!--AdminEnd--> ><!--constStr@CopyUrl--></button></div>';
+                    }
+                    if (xhr1.status==200) {
+                        if (xhr1.responseText=='') {
+                            getuplink(i,1);
+                            return;
+                        }
+                        var html=JSON.parse(xhr1.responseText);
+                        if (!html['uploadUrl']) {
+                            td2.innerHTML='<font color="red">'+xhr1.responseText+'</font><br>';
+                        } else {
+                            td2.innerHTML='<!--constStr@UploadStart--> ...';
+                            binupfile(file,html['uploadUrl'],timea+'_'+i, upbigfilename);
+                        }
+                    }
+                    if (i<files.length-1) {
+                        i++;
+                        getuplink(i);
+                    }
+                }
+                xhr1.send(null);
+            }
+        }
+        uploadbuttonshow();
+    }
+<!--AliyundriveUploadJsEnd-->
 <!--ListEnd-->
     function operatediv_close(operate) {
         document.getElementById(operate+'_div').style.display='none';
@@ -1074,16 +1146,19 @@
         document.getElementById('mask').style.height=document.documentElement.scrollHeight<window.innerHeight?window.innerHeight:document.documentElement.scrollHeight+'px';
         if (num=='') {
             var str='';
+            var fileid='';
         } else {
             var str=decodeURIComponent(document.getElementById('file_a'+num).href);
             if (str.substr(-1)==' ') str=str.substr(0, str.length-1);
             if (str.substr(-1)=='/') str=str.substr(0, str.length-1);
             if (str.substr(-8)=='?preview') str=str.substr(0, str.length-8);
             if (str.lastIndexOf('/')>-1) str=str.substr(str.lastIndexOf('/')+1);
+            var fileid=document.getElementById('file_a'+num).attributes['fileid'].nodeValue;
         }
         document.getElementById(action + '_div').style.display='';
         document.getElementById(action + '_label').innerText=str;//.replace(/&/,'&amp;');
         document.getElementById(action + '_sid').value=num;
+        document.getElementById(action + '_fileid').value=fileid;
         document.getElementById(action + '_hidden').value=str;
         if (action=='rename') document.getElementById(action + '_input').value=str;
         var $e = event || window.event;
@@ -1125,10 +1200,11 @@
                     file_a.href = (file_a.href.substr(-8)=='?preview')?(html.name.replace(/#/,'%23')+'?preview'):(html.name.replace(/#/,'%23')+'/');
                 }
                 if (str=='move'||str=='delete') document.getElementById('tr'+num).parentNode.removeChild(document.getElementById('tr'+num));
-                if (str=='create') {
-                    html=JSON.parse(xhr.responseText);
-                    addelement(html);
-                }
+                //if (str=='create') {
+                //    html=JSON.parse(xhr.responseText);
+                //    addelement(html);
+                //}
+                alert('success');
             } else alert(xhr.status+'\n'+xhr.responseText);
             document.getElementById(str+'_div').style.display='none';
             document.getElementById('mask').style.display='none';
