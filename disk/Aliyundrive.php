@@ -345,9 +345,9 @@ class Aliyundrive {
             $upload_id = $res['upload_id'];
             $result = curl('PUT', $url, $content, [], 1);
             if ($result['stat']==200) { // 块1传好
-                $tmp1['part_number'] = 1;
-                $tmp1['etag'] = $result['returnhead']['ETag'];
-                $result = $this->fileComplete($file_id, $upload_id, [ $tmp1 ]);
+                $tmp2['part_number'] = 1;
+                $tmp2['etag'] = $result['returnhead']['ETag'];
+                $result = $this->fileComplete($file_id, $upload_id, [ $tmp2 ]);
                 if ($result['stat']!=200) return output($result['body'], $result['stat']);
                 else return output('success', 0);
             }
