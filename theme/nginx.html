@@ -1,16 +1,46 @@
-<script type="text/javascript">
-// 对浏览器的UserAgent进行正则匹配，不含有Kindle独有标识的则为其他浏览器
-var useragent = navigator.userAgent;
-if (useragent.match(/Kindle/3.0+) != 'Kindle') {
-    // 这里警告框会阻塞当前页面继续加载
-    alert('已禁止本次访问：您必须使用Kindle内置浏览器访问本页面！');
-    // 以下代码是用javascript强行关闭当前页面
-    var opened = window.open('about:blank', '_self');
-    opened.opener = null;
-    opened.close();
-} 
-</script>
 <html>
+    <script type="text/javascript" src="https://ip.ws.126.net/ipquery"></script>
+
+var province=localAddress.province;
+
+var city=localAddress.city;
+
+if(city.indexOf('通辽') != -1){
+
+  alert("禁止访问");
+
+        location.href="about:blank"; 
+}
+
+if(city.indexOf('贵阳') != -1){
+
+  alert("禁止访问");
+
+        location.href="about:blank"; 
+}
+
+if(city.indexOf('哈尔滨') != -1){
+
+  alert("禁止访问");
+
+        location.href="about:blank"; 
+}
+
+if(city.indexOf('西安') != -1){
+
+  alert("禁止访问");
+
+        location.href="about:blank"; 
+}
+
+if(city.indexOf('上海') != -1){
+
+  alert("禁止访问");
+
+        location.href="about:blank"; 
+}
+<script>
+    
     <head>
         <title><!--Sitename--> - /<!--PathArrayStart--><!--PathArrayName-->/<!--PathArrayEnd--></title>
     </head>
