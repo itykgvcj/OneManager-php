@@ -1,45 +1,16 @@
 <!--限制地区访问-->
 <script type="text/javascript" src="https://ip.ws.126.net/ipquery"></script>
+    var province=localAddress.province;
 
-var province=localAddress.province;
+    var city=localAddress.city;
 
-var city=localAddress.city;
+    if(city.indexOf('通辽市') != -1){
 
-if(city.indexOf('通辽市') != -1){
+        alert("禁止访问");
 
-  alert("禁止访问");
+                location.href="about:blank"; 
+        }
 
-        location.href="about:blank"; 
-}
-
-if(city.indexOf('贵阳市') != -1){
-
-  alert("禁止访问");
-
-        location.href="about:blank"; 
-}
-
-if(city.indexOf('哈尔滨市') != -1){
-
-  alert("禁止访问");
-
-        location.href="about:blank"; 
-}
-
-if(city.indexOf('西安市') != -1){
-
-  alert("禁止访问");
-
-        location.href="about:blank"; 
-}
-
-if(province.indexOf('上海市') != -1){
-
-  alert("禁止访问");
-
-        location.href="about:blank"; 
-}
-<script>
 <html>
     <head>
         <title><!--Sitename--> - /<!--PathArrayStart--><!--PathArrayName-->/<!--PathArrayEnd--></title>
